@@ -31,7 +31,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     // include the java library that is the source of the jokes
-    compile project(':libjavajoke')
+    //compile project(':libjavajoke')
 
     // include the android library that can display a joke
     compile project(':androidjokedisplay')
