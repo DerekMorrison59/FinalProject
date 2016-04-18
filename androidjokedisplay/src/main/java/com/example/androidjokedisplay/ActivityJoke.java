@@ -3,6 +3,7 @@ package com.example.androidjokedisplay;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 public class ActivityJoke extends AppCompatActivity {
@@ -17,6 +18,8 @@ public class ActivityJoke extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_joke);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         String joke = "Nothing received from the library and that's no joke!";
 
         Bundle bun = getIntent().getExtras();
@@ -29,5 +32,18 @@ public class ActivityJoke extends AppCompatActivity {
         if (null != jokeSpace) {
             jokeSpace.setText(joke);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        // Android home means return to the main activity
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
