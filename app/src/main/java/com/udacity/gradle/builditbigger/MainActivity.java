@@ -46,8 +46,13 @@ public class MainActivity extends ActionBarActivity {
 
     public void tellJoke(View view){
 
+        // this Async class will request a joke from the GCE and then send it to a class
+        // in the androidjokelibrary so it can be displayed
         new GetJokeAsyncTask().execute(this);
 
+        // this code is left over from the development process
+        // it's no longer required but shows early testing of getting a joke from the java library
+        // and passing it to an Activity that exists in an Android library.
 /*
         String joke = "Can't find one!";
 
@@ -68,8 +73,5 @@ public class MainActivity extends ActionBarActivity {
         jokeIntent.putExtra(ActivityJoke.JOKE_KEY, joke);
         startActivity(jokeIntent);
 */
-
     }
-
-
 }
