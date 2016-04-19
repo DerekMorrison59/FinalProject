@@ -2,6 +2,7 @@ package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -14,6 +15,7 @@ import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Derek on 4/17/2016.
@@ -26,7 +28,7 @@ public class GetJokeAsyncTask extends AsyncTask<Context, Void, String> {
 
     @Override
     protected String doInBackground(Context... params) {
-        Log.i(LOG_TAG, "doInBackground");
+        //Log.i(LOG_TAG, "doInBackground");
 
         if(myApiService == null) {  // Only do this once
             Log.i(LOG_TAG, "Creating MyApi");
@@ -52,7 +54,18 @@ public class GetJokeAsyncTask extends AsyncTask<Context, Void, String> {
         // the Context required in onPostExecute to launch the ActivityJoke class is passed in as the first parameter
         context = params[0];
 
-        Log.i(LOG_TAG, ">> doInBackground calling library to get a joke");
+        //Log.i(LOG_TAG, ">> doInBackground calling library to get a joke");
+
+        int delay = context.getResources().getInteger(R.integer.launch_delay_ms);
+
+        //Log.i(LOG_TAG, ">> doInBackground delay = " + delay);
+
+
+        try {
+            TimeUnit.MILLISECONDS.sleep(delay);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         try {
             return myApiService.getJoke().execute().getData();

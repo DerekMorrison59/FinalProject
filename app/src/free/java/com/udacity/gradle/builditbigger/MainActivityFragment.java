@@ -1,11 +1,13 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -17,8 +19,17 @@ import com.google.android.gms.ads.InterstitialAd;
  */
 public class MainActivityFragment extends Fragment {
     InterstitialAd mInterstitialAd;
+    private ProgressBar mSpinner;
 
     public MainActivityFragment() {
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (null != mSpinner) {
+            mSpinner.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -26,11 +37,21 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
+        // find the spinner and hide it for now
+        mSpinner = (ProgressBar) root.findViewById(R.id.progressBar);
+        mSpinner.setVisibility(View.GONE);
+
+        mInterstitialAd = new InterstitialAd(getActivity());
+        mInterstitialAd.setAdUnitId(getActivity().getString(R.string.interstitial_ad_id));
+
         // find the joke button and attach a click listener to it
         Button button = (Button)root.findViewById(R.id.jokeButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                mSpinner.setVisibility(View.VISIBLE);
+
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                 } else {
@@ -38,9 +59,6 @@ public class MainActivityFragment extends Fragment {
                 }
             }
         });
-
-        mInterstitialAd = new InterstitialAd(getActivity());
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
 
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
