@@ -10,10 +10,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Created by Derek on 4/17/2016.
+ * Contains the button that requests a joke and the spinner to indicate 'work in progress'
  */
 public class MainActivityFragment extends Fragment {
-
     private ProgressBar mSpinner;
 
     public MainActivityFragment() {
@@ -34,6 +34,7 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+                // show the spinner while the joke is being retrieved
                 mSpinner.setVisibility(View.VISIBLE);
 
                 // this Async class will request a joke from the GCE and then send it to a class
@@ -48,6 +49,8 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        // make sure the spinner is not visible when the user returns here from seeing a joke
         if (null != mSpinner) {
             mSpinner.setVisibility(View.GONE);
         }
