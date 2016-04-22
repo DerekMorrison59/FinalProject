@@ -1,6 +1,5 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,6 +15,7 @@ import com.google.android.gms.ads.InterstitialAd;
 
 /**
  * Created by Derek on 4/17/2016.
+ * Contains the button that requests a joke and the spinner to indicate 'work in progress'
  */
 public class MainActivityFragment extends Fragment {
     InterstitialAd mInterstitialAd;
@@ -27,6 +27,7 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        // make sure the spinner is not visible when the user returns here from seeing a joke
         if (null != mSpinner) {
             mSpinner.setVisibility(View.GONE);
         }
@@ -41,6 +42,7 @@ public class MainActivityFragment extends Fragment {
         mSpinner = (ProgressBar) root.findViewById(R.id.progressBar);
         mSpinner.setVisibility(View.GONE);
 
+        // setup for the Interstitial Ad
         mInterstitialAd = new InterstitialAd(getActivity());
         mInterstitialAd.setAdUnitId(getActivity().getString(R.string.interstitial_ad_id));
 
@@ -52,6 +54,7 @@ public class MainActivityFragment extends Fragment {
 
                 mSpinner.setVisibility(View.VISIBLE);
 
+                // if an Interstitial Ad is ready then launch it otherwise just show the joke
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                 } else {
@@ -63,13 +66,17 @@ public class MainActivityFragment extends Fragment {
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
+                // when the user closes the current Interstitial Ad then request a new Ad
+                // and show the joke
                 requestNewInterstitial();
                 requestJoke();
             }
         });
 
+        // start the Interstitial Ad process by getting the first Ad (when this view is created)
         requestNewInterstitial();
 
+        // find the banner ad widget
         AdView mAdView = (AdView) root.findViewById(R.id.adView);
 
         // Create an ad request. Check logcat output for the hashed device ID to
