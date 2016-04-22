@@ -2,7 +2,6 @@ package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -46,7 +45,7 @@ public class GetJokeAsyncTask extends AsyncTask<Context, Void, String> {
                     });
             // end options for devappserver
 
-            Log.i(LOG_TAG, "building MyApi");
+            //Log.i(LOG_TAG, "building MyApi");
 
             myApiService = builder.build();
         }
@@ -54,13 +53,12 @@ public class GetJokeAsyncTask extends AsyncTask<Context, Void, String> {
         // the Context required in onPostExecute to launch the ActivityJoke class is passed in as the first parameter
         context = params[0];
 
-        //Log.i(LOG_TAG, ">> doInBackground calling library to get a joke");
-
+        // set the delay value from resources
         int delay = context.getResources().getInteger(R.integer.launch_delay_ms);
+        //Log.i(LOG_TAG, ">> doInBackground calling library to get a joke, delay = " + delay);
 
-        //Log.i(LOG_TAG, ">> doInBackground delay = " + delay);
-
-
+        // this delay only exists so there is time to show the spinner on the main fragment
+        // the speed of the local demo server is very fast and the spinner barely shows up without this delay
         try {
             TimeUnit.MILLISECONDS.sleep(delay);
         } catch (InterruptedException e) {
@@ -77,14 +75,11 @@ public class GetJokeAsyncTask extends AsyncTask<Context, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-
-        Log.i(LOG_TAG, "onPostExecute - joke: " + result);
+        //Log.i(LOG_TAG, "onPostExecute - joke: " + result);
 
         Intent jokeIntent = new Intent(context, ActivityJoke.class);
         jokeIntent.putExtra(ActivityJoke.JOKE_KEY, result);
         jokeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(jokeIntent);
-
-        //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
     }
 }
