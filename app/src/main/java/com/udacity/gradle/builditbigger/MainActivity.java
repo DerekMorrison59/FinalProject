@@ -4,14 +4,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-
-//import android.widget.Toast;
-//import android.content.Intent;
-//
-//import com.example.JokeSource;
-//import com.example.androidjokedisplay.ActivityJoke;
-
 
 public class MainActivity extends ActionBarActivity {
 
@@ -20,7 +12,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,39 +34,4 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-/*
-    public void tellJoke(View view){
-
-        // this Async class will request a joke from the GCE and then send it to a class
-        // in the androidjokelibrary so it can be displayed
-        new GetJokeAsyncTask().execute(this);
-
-        // this code is left over from the development process
-        // it's no longer required but shows early testing of getting a joke from the java library
-        // and passing it to an Activity that exists in an Android library.
-*/
-/*
-        String joke = "Can't find one!";
-
-        try {
-            joke = JokeSource.getJoke();
-        }
-        catch (Exception e){
-            joke = "FAIL: " + e.getMessage();
-        }
-
-        Toast.makeText(this, joke, Toast.LENGTH_SHORT).show();
-
-
-        // now launch the activity from the android joke library
-        // pass the joke as an extra
-
-        Intent jokeIntent = new Intent(this, ActivityJoke.class);
-        jokeIntent.putExtra(ActivityJoke.JOKE_KEY, joke);
-        startActivity(jokeIntent);
-*//*
-
-    }
-*/
 }
