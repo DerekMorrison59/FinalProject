@@ -14,9 +14,11 @@ android {
     productFlavors {
         free {
             applicationId "com.udacity.gradle.builditbigger.free"
+            versionName "1.0-free"
         }
         paid {
             applicationId "com.udacity.gradle.builditbigger.paid"
+            versionName "1.0-pro"
         }
     }
     buildTypes {
@@ -46,3 +48,4 @@ dependencies {
 
     compile project(path: ':jokebackend', configuration: 'android-endpoints')
 }
+
