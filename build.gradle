@@ -17,3 +17,34 @@ allprojects {
         jcenter()
     }
 }
+
+// this task assumes that the backend appengine is not running
+task startEngineAndRunTests {
+    dependsOn ":jokebackend:appengineRun"
+
+    // set the 'jokebackend' to run as a daemon so this task can continue
+    project(":jokebackend").afterEvaluate { backend ->
+        backend.extensions.appengine.daemon = true
+    }
+
+    // once the appengine is running it is safe to run the connected Tests
+    finalizedBy ":app:connectedCheck"
+}
+
+// this task runs the tests and then stops the appengine
+task startTestCycle {
+    dependsOn "startEngineAndRunTests"
+    finalizedBy ":jokebackend:appengineStop"
+}
+
+// this task may be used to stop the appengine
+// might be required before running the 'startTestCycle' task (above)
+task stopTheEngine {
+    dependsOn ":jokebackend:appengineStop"
+}
+
+// this task is handy to prove that the tests fail if the appengine is not running
+task startTestsOnly {
+    dependsOn ":app:connectedCheck"
+}
+
