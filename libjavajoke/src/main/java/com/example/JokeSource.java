@@ -2,7 +2,6 @@ package com.example;
 
 public class JokeSource {
     static int lastJoke = -1;
-    static int[] jokeCount = new int[20];
 
     public static String getJoke(){
 
@@ -25,9 +24,8 @@ public class JokeSource {
 
         // this joke should only be delivered if the jokeBag is empty or very small
         String joke = "Dirty Joke: A white horse fell in a mud puddle";
-        String dS = "";
 
-        // special case - just return the joke
+        // special case - just return the only joke
         if (jokeBag.length == 1) {
             joke = jokeBag[0];
         }
@@ -40,11 +38,14 @@ public class JokeSource {
 
             while (repeatJoke) {
                 random = (int) (Math.random() * jokeBag.length);
+
+                // if this is a new random number then return the joke
                 if (lastJoke != random) {
                     joke = jokeBag[random];
                     repeatJoke = false;
-                    jokeCount[random]++;
                 } else {
+                    // keep track of how many times a new random number has been requested
+                    // and exit this loop if the number is too high
                     loopLimiter++;
                     if (loopLimiter > jokeBag.length) {
                         repeatJoke = false;
@@ -54,13 +55,7 @@ public class JokeSource {
 
             // remember this joke number
             lastJoke = random;
-
-            for (int i = 0; i < jokeBag.length; i++) {
-                dS += "\n" + i + ": " + jokeCount[i];
-            }
-
-            dS += "\nloopLimiter: " + loopLimiter;
         }
-        return joke + dS;
+        return joke;
     }
 }
