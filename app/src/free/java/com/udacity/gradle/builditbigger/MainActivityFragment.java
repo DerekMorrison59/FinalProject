@@ -38,6 +38,17 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
+        // find the banner ad widget
+        AdView mAdView = (AdView) root.findViewById(R.id.adView);
+
+        // Create an ad request. Check logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
+
         // find the spinner and hide it for now
         mSpinner = (ProgressBar) root.findViewById(R.id.progressBar);
         mSpinner.setVisibility(View.GONE);
@@ -52,8 +63,6 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                mSpinner.setVisibility(View.VISIBLE);
-
                 // if an Interstitial Ad is ready then launch it otherwise just show the joke
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
@@ -66,26 +75,18 @@ public class MainActivityFragment extends Fragment {
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
-                // when the user closes the current Interstitial Ad then request a new Ad
-                // and show the joke
+                // when the user closes the current Interstitial Ad then request a new Ad from Google
                 requestNewInterstitial();
+
+                // display the spinner while waiting for the joke to arrive from the server
+                mSpinner.setVisibility(View.VISIBLE);
+
                 requestJoke();
             }
         });
 
         // start the Interstitial Ad process by getting the first Ad (when this view is created)
         requestNewInterstitial();
-
-        // find the banner ad widget
-        AdView mAdView = (AdView) root.findViewById(R.id.adView);
-
-        // Create an ad request. Check logcat output for the hashed device ID to
-        // get test ads on a physical device. e.g.
-        // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
-        mAdView.loadAd(adRequest);
 
         return root;
     }
@@ -98,7 +99,7 @@ public class MainActivityFragment extends Fragment {
 
     private void requestNewInterstitial() {
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("C1ECB615000D2D657A3882F53097BBA4D2BE03C1") //"SEE_YOUR_LOGCAT_TO_GET_YOUR_DEVICE_ID")
+                .addTestDevice("SEE_YOUR_LOGCAT_TO_GET_YOUR_DEVICE_ID")
                 .build();
 
         mInterstitialAd.loadAd(adRequest);
