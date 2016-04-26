@@ -2,5 +2,4 @@
 <resources>
     <string name="app_name">Build it Bigger Pro</string>
     <string name="instructions">Press the button for a joke! (no ads required)</string>
-    <integer name="launch_delay_ms">750</integer>
 </resources>
