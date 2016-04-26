@@ -13,9 +13,9 @@ This task assumes that the GCE local server is not running and therefore does no
 
 ### Differences between 'free' and 'paid' versions
 
-Each has a different app_name
-Each has different instructions
-Each has its own launch_delay_ms
+* Each has a different app_name
+* Each has different instructions
+* Each has its own launch_delay_ms
 
 ### Free
 - shows a banner ad on the main screen
