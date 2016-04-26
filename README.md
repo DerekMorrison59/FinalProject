@@ -1,5 +1,40 @@
 # Gradle for Android and Java Final Project
 
+## Developer Notes
+
+The joke library returns a random joke from a collection and tries not to return the same joke for any 2 consecutive requests.
+A configurable delay (launch_delay_ms) was added to simulate the time it takes to retrieve a joke from the server. 
+(The real purpose of the delay is to show the spinner)
+
+### Optional Test Task
+
+This task assumes that the GCE local server is not running and therefore does not have to worry about stopping it first.
+* Gradle Task Name: **startTestCycle**
+
+### Differences between 'free' and 'paid' versions
+
+Each has a different app_name
+Each has different instructions
+Each has its own launch_delay_ms
+
+### Free
+- shows a banner ad on the main screen
+  this requires an extra widget (com.google.android.gms.ads.AdView) in the free layout file
+- displays an interstitial ad every third time (configurable) the user clicks 'Tell Joke'
+  this requires an additional activity (com.google.android.gms.ads.AdActivity)
+  in the free version AndroidManifest file
+- app_name is Build it Bigger Free
+- has launch_delay_ms = 500
+- the spinner appears after the interstitial ad is dismissed
+
+### Paid
+- app_name is Build it Bigger Pro
+- has launch_delay_ms = 750
+- the spinner appears when the user clicks 'Tell Joke'
+
+
+# Gradle for Android and Java Final Project Outline
+
 In this project, you will create an app with multiple flavors that uses
 multiple libraries and Google Could Endpoints. The finished app will consist
 of four modules. A Java library that provides jokes, a Google Could Endpoints
