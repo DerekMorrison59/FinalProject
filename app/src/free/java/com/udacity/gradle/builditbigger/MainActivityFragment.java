@@ -18,8 +18,11 @@ import com.google.android.gms.ads.InterstitialAd;
  * Contains the button that requests a joke and the spinner to indicate 'work in progress'
  */
 public class MainActivityFragment extends Fragment {
-    InterstitialAd mInterstitialAd;
+    private InterstitialAd mInterstitialAd;
     private ProgressBar mSpinner;
+    private int mInterstitial_click_count;
+    private int mClick_count_max;
+    private boolean mShow_interstitial = false;
 
     public MainActivityFragment() {
     }
@@ -56,6 +59,8 @@ public class MainActivityFragment extends Fragment {
         // setup for the Interstitial Ad
         mInterstitialAd = new InterstitialAd(getActivity());
         mInterstitialAd.setAdUnitId(getActivity().getString(R.string.interstitial_ad_id));
+        mClick_count_max = getActivity().getResources().getInteger(R.integer.ad_free_clicks);
+        mInterstitial_click_count = mClick_count_max;
 
         // find the joke button and attach a click listener to it
         Button button = (Button)root.findViewById(R.id.jokeButton);
@@ -63,10 +68,20 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                // if an Interstitial Ad is ready then launch it otherwise just show the joke
-                if (mInterstitialAd.isLoaded()) {
+                mInterstitial_click_count++;
+
+                if (mInterstitial_click_count >= mClick_count_max) {
+                    mInterstitial_click_count = 0;
+                    mShow_interstitial = true;
+                }
+
+                // show the Interstitial Ad if the button has been clicked enough and the Ad is ready
+                if (mShow_interstitial && mInterstitialAd.isLoaded()) {
+                    mShow_interstitial = false;
                     mInterstitialAd.show();
                 } else {
+                    // show the spinner while waiting for the requested joke to be displayed
+                    mSpinner.setVisibility(View.VISIBLE);
                     requestJoke();
                 }
             }
